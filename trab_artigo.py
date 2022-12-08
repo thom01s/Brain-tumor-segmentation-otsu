@@ -47,12 +47,6 @@ ret, binary = cv2.threshold(equal,85,255,cv2.THRESH_BINARY)
 
 
 contagem = np.sum(binary == 255)
-#--------------------------------------------------------
-#separação de img com e sem tumor
-#if (np.sum(binary == 255)/np.sum(binary)>xxxx):
-#    color = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-#else:
-#--------------------------------------------------------  
   
 #contornos
 kernel = np.ones((3,3),np.uint8)
