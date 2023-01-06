@@ -95,3 +95,63 @@ plt.xticks([]), plt.yticks([])
 plt.subplot(339),plt.imshow(skull, cmap='gray'),plt.title('Crânio')
 plt.xticks([]), plt.yticks([])
 plt.show()
+
+
+
+
+#################################################################
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Sep 22 14:44:19 2022
+
+@author: Thomas
+"""
+
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+
+#leitura da imagem
+img = cv2.imread('matriz',0)
+
+#filtro gaussiano
+blur = cv2.GaussianBlur(mask,(3,3),0)
+
+equal = cv2.equalizeHist(blur)
+
+#retirada de pontos pouco intensos por otsu e equalização do histograma
+ret, high = cv2.threshold(equal,0,255,cv2.THRESH_TOZERO+cv2.THRESH_OTSU)
+equal = cv2.equalizeHist(high)
+
+#binarização em 50% da intensidade total
+ret, binary = cv2.threshold(equal,85,255,cv2.THRESH_BINARY)
+#cv2.imshow("binario", binary)
+  
+#contornos
+kernel = np.ones((3,3),np.uint8)
+contours, hierarchy = cv2.findContours(binary,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+
+#operações morfológicas
+dilation = cv2.dilate(binary, kernel, iterations = count)
+
+erro = 0
+(len(contours) < 104): 
+	erro =+ 1
+# ----------(analizar eletrodos para achar onde está o erro)----------
+
+plt.subplot(331),plt.imshow(img, cmap='gray'),plt.title('Original')
+plt.xticks([]), plt.yticks([])
+plt.subplot(332),plt.imshow(blur, cmap='gray'),plt.title('Blur')
+plt.xticks([]), plt.yticks([])
+plt.subplot(333),plt.imshow(equal, cmap='gray'),plt.title('Equalizado')
+plt.xticks([]), plt.yticks([])
+plt.subplot(334),plt.hist(img.ravel(),256),plt.title('Histograma inicial')
+plt.xticks([0, 50, 100, 150, 200, 255]), plt.yticks([])
+plt.subplot(335),plt.hist(equal.ravel(),256),plt.title('Histograma equalizado')
+plt.xticks([0, 50, 100, 150, 200, 255]), plt.yticks([])
+plt.subplot(336),plt.imshow(binary, cmap='gray'),plt.title('Binarização')
+plt.xticks([]), plt.yticks([])
+plt.subplot(337),plt.imshow(contours, cmap='gray'),plt.title('Contornos')
+plt.xticks([]), plt.yticks([])
+plt.show()
+################################################################
